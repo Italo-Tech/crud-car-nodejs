@@ -28,8 +28,8 @@ module.exports = {
         }
         res.json(json);
     },
-    addCar: async(req, res) => {
-        let json = {error: '', result:{}};
+    addCar: async (req, res) => {
+        let json = { error: '', result: {} };
 
         let modelo = req.body.modelo;
         let placa = req.body.placa;
@@ -37,7 +37,7 @@ module.exports = {
         let ano = req.body.ano;
 
         if(modelo && placa && cor && ano) {
-            let CarCode = await  CarService.addCar(modelo, placa, cor, ano);
+            let CarCode = await CarService.addCar(modelo, placa, cor, ano);
             json.result = {
                 codigo: CarCode,
                 modelo,
