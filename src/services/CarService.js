@@ -1,0 +1,52 @@
+const db = require('../db');
+
+module.exports = {
+    searchAll: () => {
+        return new Promise((accepted, rejected)=>{
+            db.query('SELECT * FROM carros', (error, results)=> {
+                if(error) { rejected(error); return; }
+                accepted(results)
+            })
+        })
+    },
+    searchOne: (code) => {
+        return new Promise((accepted, rejected)=>{
+            db.query('SELECT * FROM carros WHERE codigo = ?', [code], (error, results) => {
+                if(error) { rejected(error); return; }
+                if(results.length > 0) {
+                    accepted(results[0]);
+                } else {
+                    accepted(false);
+                }
+            });
+        });
+    },
+    addCar: (modelo, placa, cor, ano) => {
+        return new Promise((accepted, rejected)=>{
+            db.query('INSERT INTO carros (modelo, placa, cor, ano) VALUES (?, ?, ?, ?)',
+                [modelo, placa, cor, ano],
+                (error, results) => {
+                    if(error) { rejected(error); return; }
+                    accepted(results.insertCodigo);
+            });
+        });
+    },
+    updateCar: (codigo, modelo, placa, cor, ano) => {
+        return new Promise((accepted, rejected)=>{
+            db.query('UPDATE carros SET modelo = ?, placa = ?, cor = ?, ano = ? WHERE codigo = ?',
+                [modelo, placa, cor, ano, codigo],
+                (error, results) => {
+                    if(error) { rejected(error); return; }
+                    accepted(results);
+            });
+        });
+    },
+    deleteCar: (codigo) => {
+        return new Promise((accepted, rejected)=>{
+            db.query('DELETE FROM carros WHERE codigo = ?', [codigo], (error, results) => {
+                if(error) { rejected(error); return; }
+                accepted(results);
+            });
+        });
+    }
+};
